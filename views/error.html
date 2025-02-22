@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <h1>{{message}}</h1>
+  <h2>{{error.status}}</h2>
+  <pre>{{error.stack}}</pre>
+{% endblock %}
+
+<!-- <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>오류 발생</title>
+</head>
+<body>
+    <h1>⚠ 에러 발생 ⚠</h1>
+    <p>{{ message }}</p>
+    <p>오류 상태 코드: {{ error.status }}</p>
+</body>
+</html> -->
+
