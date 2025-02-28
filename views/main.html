@@ -2,4 +2,19 @@
 
 {% block content %}
   <h1>메인 홈페이지</h1>
+
+  <!-- 로그인 상태 확인 -->
+  {% if user %} 
+    <p>환영합니다, {{ user.nickname }}님!</p>
+    <form action="/user/logout" method="post">
+      <button type="submit">로그아웃</button>
+    </form>
+  {% else %}
+    <a href="/user/login">
+      <button>로그인</button>
+    </a>
+    <a href="/user/join">
+      <button>회원가입</button>
+    </a>
+  {% endif %}
 {% endblock %}
