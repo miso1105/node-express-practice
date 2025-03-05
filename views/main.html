@@ -1,20 +1,18 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <h1>메인 홈페이지</h1>
+  <h3>메인 홈페이지</h3>
+  <!-- 모든 게시글  -->
+  {% for post in posts %}
+  <div class="all-of-the-posts">
+    <div class="post">
+      <div class="post-writer">{{ post.writer }}</div>
+      <div class="post-title">{{ post.title }}</div>
+      <div class="post-contents">{{ post.contents }}</div>
+      <div class="post-date">{{ post.createdAt }}</div>
+    </div>
+  </div>
+  {% endfor %}
 
-  <!-- 로그인 상태 확인 -->
-  {% if user %} 
-    <p>환영합니다, {{ user.nickname }}님!</p>
-    <form action="/user/logout" method="post">
-      <button type="submit">로그아웃</button>
-    </form>
-  {% else %}
-    <a href="/user/login">
-      <button>로그인</button>
-    </a>
-    <a href="/user/join">
-      <button>회원가입</button>
-    </a>
-  {% endif %}
-{% endblock %}
+  <a href="/search">게시글 검색하기</a>
+ {% endblock %}

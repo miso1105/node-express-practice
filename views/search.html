@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<!-- 게시글 아이디로 검색 -->
+    <div class="search-by-post-id">
+        <form id="search-form" action="/search">
+            <!-- 여기서 조회하면 -> 페이지 라우터로 -> 페이지 컨트롤러가 디비작업 후 렌더링 화면에 필요한 데이터 응답으로 보내줌 -->
+            <input type="number" name="postId" placeholder="게시글 아이디로 검색">
+            <button class="btn">검색</button>
+        </form>
+    </div>
+
+    <!-- 검색 결과가 있을 때 -->
+    {% if searchedPost %}
+    <div class="searched-post">
+        <h4>검색 결과</h4>
+        <div class="post">
+            <input type="hidden" value="{{ searchedPost.id }}" class="searched-post-id">
+            <div id="writer" class="post-writer">{{ searchedPost.writer }}</div>
+            <div class="post-title">{{ searchedPost.title }}</div>
+            <div class="post-contents">{{ searchedPost.contents }}</div>
+            <div class="post-date">{{ searchedPost.createdAt }}</div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if searchedPost.writer == user.id %}
+        <div class="update-post">
+            <div>
+                <label for="title">게시글 제목</label>
+                <input id="title" type="text" value="{{ searchedPost.title }}" required>
+            </div>
+            <div>
+                <label for="contents">게시글 내용</label>
+                <textarea id="contents">{{ searchedPost.contents }}</textarea>
+            </div>
+            <button id="update-button" class="update-button">수정하기</button>
+            <button id="delete-button" class="delete-button">삭제하기</button>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.getElementById('update-button').addEventListener('click', async function() {
+            const postId = document.querySelector('.searched-post-id').value;
+            const title = document.getElementById('title').value;
+            const contents = document.getElementById('contents').value;
+            const writer = document.getElementById('writer').innerText;
+
+            try {
+                const response = await axios.patch(`/post/${postId}`, { title, contents, writer });
+                alert('게시글이 수정되었습니다.');
+            } catch (error) {
+                console.error('게시글이 수정 실패:', error);
+                alert('게시글 수정 실패');
+            }
+        });
+        document.getElementById('delete-button').addEventListener('click', function() {
+            const postId = document.querySelector('.searched-post-id').value;
+            const writer = document.getElementById('writer').innerText;
+
+            axios.delete(`/post/${postId}`, { data: { postId, writer } })
+                .then(response => {
+                    alert('게시글이 삭제되었습니다.');
+                })
+                .catch(error => {
+                    console.error('게시글 삭제 실패:', error);
+                    alert('게시글 삭제 실패'); 
+                });
+      
+        });
+    </script>
+{% endblock %}

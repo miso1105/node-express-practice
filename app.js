@@ -43,7 +43,7 @@ app.use(session({
     cookie: {
         httpOnly: true,
         secure: false, 
-        // maxAge: 1000 * 60 * 60 * 2  // 2시간 유지 
+        maxAge: 1000 * 60 * 60 * 2  // 2시간 유지 
     }
 }));
 app.use((req, res, next) => {
