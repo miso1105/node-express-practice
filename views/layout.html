@@ -1,11 +1,35 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <p>node</p>
-  </head>
-  <body>
-    {% block content %}
-    {% endblock %}
-  </body>
+
+<head>
+  <meta charset="UTF-8">
+  <h1>node</h1>
+</head>
+
+<body>
+  <!-- 로그인 상태 확인 -->
+  {% if user %}
+  <p>환영합니다, {{ user.nickname }}님!</p>
+  <!-- GET 방식(단순한 페이지 이동)-->
+  <a href="/post" class="btn">게시글 작성하러 가기</a>
+  <!-- POST 방식-->
+  <form action="/user/logout" method="post">
+    <button type="submit">로그아웃</button>
+  </form>
+  <!-- 로그인 되지 않은 경우  -->
+  {% else %}
+  <a href="/user/login">
+    <button>로그인</button>
+  </a>
+  <a href="/user/join">
+    <button>회원가입</button>
+  </a>
+  {% endif %}
+
+  {% block content %}
+  {% endblock %}
+  {% block script %}
+  {% endblock %}
+</body>
+
 </html>
